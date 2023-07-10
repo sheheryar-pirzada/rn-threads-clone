@@ -1,20 +1,29 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
+import { LogBox } from 'react-native';
+import RootNavigator from './src/navigation/RootNavigator';
+import { styles } from './src/styles/styles';
+import { AppProvider } from './src/context/AppContext';
 
 export default function App() {
+  LogBox.ignoreLogs([
+    'Animated: `useNativeDriver` was not specified.',
+    'Animated.event now requires a second argument for options',
+  ]);
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <AppProvider>
+      <NavigationContainer>
+        <SafeAreaProvider>
+          <SafeAreaView
+            edges={['top', 'left']}
+            style={styles.container}
+          >
+            <RootNavigator />
+            <StatusBar style="light" />
+          </SafeAreaView>
+        </SafeAreaProvider>
+      </NavigationContainer>
+    </AppProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
